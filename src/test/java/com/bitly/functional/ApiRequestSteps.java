@@ -72,6 +72,14 @@ public class ApiRequestSteps extends BaseSteps {
 				.all()
 				.body(attribute, IsEqual.equalTo(value));
 	}
+	
+	@Then("^the response body should contain attribute '(.+)' with text value not empty")
+	public void response_body_contains_attribute_and_value_not_null(String attribute) {
+		response.then()
+				.log()
+				.all()
+				.body(attribute, IsNot.not("") );
+	}
 
 	@Then("the response body should contain attribute '(.+)' with text random_long_url")
 	public void response_body_contains_attribute_and_long_url(String attribute) {
