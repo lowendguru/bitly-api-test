@@ -6,6 +6,7 @@ Feature: User Info endpoint
   Scenario: successful call to User Info
     When I make a request to the 'User Info' endpoint
     Then the status code of the response is 200
-#	And the response should contain
+	And the response body should contain attribute 'status_code' with value 200
+	And the response body should contain attribute 'status_txt' with value 'OK'
 	
 	

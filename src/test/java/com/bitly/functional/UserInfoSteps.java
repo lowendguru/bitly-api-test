@@ -13,6 +13,8 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsNot;
 
 public class UserInfoSteps extends BaseSteps {
 
@@ -42,6 +44,24 @@ public class UserInfoSteps extends BaseSteps {
 
 		response = request	.when()
 							.get(getEndpointName(endpointName));
+	}
+
+	@Then("^the response body should contain attribute '(.+)' with value '(.+)'")
+	public void response_body_contains_attribute_and_value(String attribute, String value) {
+		response.then()
+				.log()
+				.all()
+				.body(attribute, IsEqual.equalTo(value));
+
+	}
+	
+	@Then("^the response body should contain attribute '(.+)' with value (\\d+)")
+	public void response_body_contains_attribute_and_value(String attribute, int value) {
+		response.then()
+				.log()
+				.all()
+				.body(attribute, IsEqual.equalTo(value));
+
 	}
 
 	@Then("I should get a successful response")
