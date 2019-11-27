@@ -5,6 +5,6 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = { "de.monochromata.cucumber.report.PrettyReports:target/cucumber" })
+@CucumberOptions(plugin = { "pretty", "de.monochromata.cucumber.report.PrettyReports:target/cucumber" })
 public class RunCucumberTest {
 }
