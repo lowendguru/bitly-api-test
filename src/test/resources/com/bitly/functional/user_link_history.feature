@@ -8,3 +8,5 @@ Scenario: successful request to User Link History endpoint
 	And the response body should contain attribute 'status_code' with number value 200 
 	And the response body should contain attribute 'status_txt' with text value 'OK' 
 	And the response body should contain attribute 'data.result_count' with number value not 0 
+	
+
