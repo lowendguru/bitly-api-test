@@ -21,7 +21,7 @@ Scenario: successful request to User Link History endpoint incrementing number o
 	And I make a request to the 'Shorten' endpoint 
 	Then the status code of the response is 200
 	And the response body should contain attribute 'data.url' with text value not empty
-	When I wait for 3 seconds 
+	When I wait for 5 seconds 
 	And I make a request to the 'User Link History' endpoint 
 	Then the status code of the response is 200 
 	And the number value of the attribute 'data.result_count' has been incremented by 1
