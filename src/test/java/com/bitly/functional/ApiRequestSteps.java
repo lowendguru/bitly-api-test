@@ -14,13 +14,24 @@ import io.restassured.http.ContentType;
 
 public class ApiRequestSteps extends BaseSteps {
 
-
-
-	@Given("valid user credentials are available")
-	public void valid_credentials() {
+	@Given("access token is valid")
+	public void valid_access_token() {
 		// get accessToken from the test data file
 		accessToken = PropertiesFileReader	.getProperties()
 											.getProperty("accessToken");
+
+	}
+
+	@Given("access token is invalid")
+	public void invalid_access_token() {
+
+		accessToken = "invalid_access_token";
+
+	}
+
+	@Given("access token is missing")
+	public void missing_access_token() {
+		accessToken = "";
 
 	}
 
