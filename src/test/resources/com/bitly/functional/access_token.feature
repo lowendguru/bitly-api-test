@@ -16,3 +16,5 @@ Scenario Outline: unsuccessful request to endpoint with wrong access token
 		|missing|User Link History|500|MISSING_ARG_ACCESS_TOKEN|
 		|invalid|Shorten|500|INVALID_ARG_ACCESS_TOKEN|
 		|missing|Shorten|500|MISSING_ARG_ACCESS_TOKEN|
+
+# Notice the inconsistency in responses depending on endpoint

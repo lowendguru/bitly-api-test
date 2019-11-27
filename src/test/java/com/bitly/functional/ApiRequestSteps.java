@@ -1,6 +1,7 @@
 package com.bitly.functional;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;
@@ -72,13 +73,13 @@ public class ApiRequestSteps extends BaseSteps {
 				.all()
 				.body(attribute, IsEqual.equalTo(value));
 	}
-	
+
 	@Then("^the response body should contain attribute '(.+)' with text value not empty")
 	public void response_body_contains_attribute_and_value_not_null(String attribute) {
 		response.then()
 				.log()
 				.all()
-				.body(attribute, IsNot.not("") );
+				.body(attribute, IsNot.not(""));
 	}
 
 	@Then("the response body should contain attribute '(.+)' with text random_long_url")
@@ -102,6 +103,26 @@ public class ApiRequestSteps extends BaseSteps {
 				.body(attribute, IsNot.not(value));
 	}
 
+	@When("I get the number value of the attribute '(.+)'")
+	public void get_number_value_from_attribute(String attribute) {
+		numberValue = response	.then()
+								.log()
+								.all()
+								.extract()
+								.path(attribute);
+	}
+
+	@Then("the number value of the attribute '(.+)' has been incremented by (\\d+)")
+	public void number_has_incremented(String attribute, int increment) {
+		int newNumberValue = response	.then()
+										.log()
+										.all()
+										.extract()
+										.path(attribute);
+
+		assertTrue(newNumberValue == numberValue + increment);
+	}
+
 	@Then("I should get a successful response")
 	public void successful_response() {
 		response.then()
@@ -116,6 +137,17 @@ public class ApiRequestSteps extends BaseSteps {
 				.log()
 				.all()
 				.statusCode(statusCode);
+	}
+	
+	// workaround due to slow endpoint update 
+	@When("I wait for (\\d+) seconds")
+	public void wait_for_seconds(int seconds){
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

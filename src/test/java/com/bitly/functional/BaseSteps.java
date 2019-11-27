@@ -20,7 +20,7 @@ public class BaseSteps {
 	protected String accessToken;
 	protected Response response;
 	protected RequestSpecification request;
-	protected ValidatableResponse json;
+	protected int numberValue;
 	protected String longUrlParam;
 
 	// helper methods
