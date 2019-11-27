@@ -3,9 +3,12 @@ package com.bitly.functional;
 import static io.restassured.RestAssured.given;
 
 import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsNot;
 
 import com.bitly.utils.PropertiesFileReader;
+import com.bitly.utils.RandomValueGenerator;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,37 +17,49 @@ import io.restassured.http.ContentType;
 
 public class ApiRequestSteps extends BaseSteps {
 
+	@Before
+	public void setupTest() {
+		RestAssured.baseURI = BASE_URL;
+		request = given()	.log()
+							.all();
+	}
+
 	@Given("access token is valid")
 	public void valid_access_token() {
 		// get accessToken from the test data file
 		accessToken = PropertiesFileReader	.getProperties()
 											.getProperty("accessToken");
+	}
 
+	@Given("^a specific long url '(.*?)' is available as parameter")
+	public void long_url_parameter(String longUrl) {
+		longUrlParam = longUrl;
+		request.param("longUrl", longUrlParam);
+	}
+
+	@Given("a random long url is available as parameter")
+	public void random_long_url_parameter() {
+		long_url_parameter("https://www.google.com/search?q=" + RandomValueGenerator.getRandomText(20));
 	}
 
 	@Given("access token is invalid")
 	public void invalid_access_token() {
-
 		accessToken = "invalid_access_token";
-
 	}
 
 	@Given("access token is missing")
 	public void missing_access_token() {
 		accessToken = "";
-
 	}
 
 	@When("^I make a request to the '(.+)' endpoint")
-	public void valid_request_to_user_info(String endpointName) {
+	public void valid_request_to_endpoint(String endpointName) {
 
-		RestAssured.baseURI = BASE_URL;
-
-		request = given()	.param("access_token", accessToken)
-							.basePath("/")
-							.log()
-							.all()
-							.contentType(ContentType.JSON);
+		request	.param("access_token", accessToken)
+				.basePath("/")
+				.contentType(ContentType.JSON)
+				.log()
+				.all();
 
 		response = request	.when()
 							.get(getEndpointName(endpointName));
@@ -56,7 +71,11 @@ public class ApiRequestSteps extends BaseSteps {
 				.log()
 				.all()
 				.body(attribute, IsEqual.equalTo(value));
+	}
 
+	@Then("the response body should contain attribute '(.+)' with text random_long_url")
+	public void response_body_contains_attribute_and_long_url(String attribute) {
+		response_body_contains_attribute_and_value(attribute, longUrlParam);
 	}
 
 	@Then("^the response body should contain attribute '(.+)' with number value (\\d+)")
@@ -65,7 +84,14 @@ public class ApiRequestSteps extends BaseSteps {
 				.log()
 				.all()
 				.body(attribute, IsEqual.equalTo(value));
+	}
 
+	@Then("^the response body should contain attribute '(.+)' with number value not (\\d+)")
+	public void response_body_not_contains_attribute_and_value(String attribute, int value) {
+		response.then()
+				.log()
+				.all()
+				.body(attribute, IsNot.not(value));
 	}
 
 	@Then("I should get a successful response")
