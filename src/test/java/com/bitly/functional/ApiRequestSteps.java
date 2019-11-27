@@ -1,5 +1,9 @@
 package com.bitly.functional;
 
+import static io.restassured.RestAssured.given;
+
+import org.hamcrest.core.IsEqual;
+
 import com.bitly.utils.PropertiesFileReader;
 
 import cucumber.api.java.en.Given;
@@ -7,21 +11,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 
-import static io.restassured.RestAssured.given;
+public class ApiRequestSteps extends BaseSteps {
 
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNot;
 
-public class UserInfoSteps extends BaseSteps {
-
-	private String accessToken;
-	private Response response;
-	private RequestSpecification request;
-	private ValidatableResponse json;
 
 	@Given("valid user credentials are available")
 	public void valid_credentials() {
@@ -46,7 +39,7 @@ public class UserInfoSteps extends BaseSteps {
 							.get(getEndpointName(endpointName));
 	}
 
-	@Then("^the response body should contain attribute '(.+)' with value '(.+)'")
+	@Then("^the response body should contain attribute '(.+)' with text value '(.+)'")
 	public void response_body_contains_attribute_and_value(String attribute, String value) {
 		response.then()
 				.log()
@@ -54,8 +47,8 @@ public class UserInfoSteps extends BaseSteps {
 				.body(attribute, IsEqual.equalTo(value));
 
 	}
-	
-	@Then("^the response body should contain attribute '(.+)' with value (\\d+)")
+
+	@Then("^the response body should contain attribute '(.+)' with number value (\\d+)")
 	public void response_body_contains_attribute_and_value(String attribute, int value) {
 		response.then()
 				.log()
@@ -78,19 +71,6 @@ public class UserInfoSteps extends BaseSteps {
 				.log()
 				.all()
 				.statusCode(statusCode);
-	}
-
-	// helper methods
-
-	public String getEndpointName(String endpointString) {
-		switch (endpointString) {
-		case "User Info":
-			return USERINFO_ENDPOINT;
-
-		default:
-			return null;
-		}
-
 	}
 
 }
