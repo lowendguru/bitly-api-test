@@ -9,10 +9,14 @@ Scenario: successful request to Shorten endpoint with random long URL value
 	And the response body should contain attribute 'status_code' with number value 200 
 	And the response body should contain attribute 'status_txt' with text value 'OK' 
 	And the response body should contain attribute 'data.long_url' with text random_long_url 
-	And the response body should contain attribute 'data.url' with text value not empty 
-	
-	
-Scenario: successful request to Shorten endpoint with specific long URL value 
+	And the response body should contain attribute 'data.url' with text value not empty
+
+
+	Scenario: successful request to Shorten endpoint with random long URL value
+		Given access token is missing
+		When the number value of the attribute '<string>' has been incremented by <number>
+
+	Scenario: successful request to Shorten endpoint with specific long URL value 
 	Given access token is valid 
 	And a specific long url 'http://test.com/' is available as parameter 
 	When I make a request to the 'Shorten' endpoint 
