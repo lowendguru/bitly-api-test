@@ -3,7 +3,6 @@ package com.bitly.functional;
 import com.bitly.utils.PropertiesFileReader;
 
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 /*

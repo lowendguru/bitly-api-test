@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-
 public class PropertiesFileReader {
 
 	private static final String PROPERTIES_FILE = "src/test/resources/com/bitly/data/datafile.properties";
